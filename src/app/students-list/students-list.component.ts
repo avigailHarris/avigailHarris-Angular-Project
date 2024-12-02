@@ -14,7 +14,10 @@ export class StudentsListComponent {
     new Student(5, "James", "Wilson", false, 74),
   ];
   constructor() { }
-
+  deleteStudent(id: number){
+    let index = this.studentsList.findIndex(student => student.id === id);
+    this.studentsList.splice(index, 1); 
+  }
   ngOnInit(): void {
 
   }
