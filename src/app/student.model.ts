@@ -1,17 +1,29 @@
-export class Student{
+export class Student {
     id: number;
-    firstName: string;
-    lastName: string;
-    address: string="";
-    phone: string="";
-    active: boolean;
-    marksAvg: number
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    active?: boolean;
+    marksAvg?: number;
+    leaveDate?: Date;
+  
     
-    constructor(id: number, firstName: string, lastName: string,  active: boolean, marksAvg: number) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.active = active;
-        this.marksAvg = marksAvg;
+    constructor(
+      id: number = 0,            
+      firstName?: string, 
+      lastName?: string, 
+      phone?: string, 
+      active?: boolean, 
+      marksAvg?: number, 
+      leaveDate?: Date
+    ) {
+      this.id = id;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.phone = phone;
+      this.active = active;
+      this.marksAvg = marksAvg;
+      this.leaveDate = leaveDate;
     }
-}
+  }
+  

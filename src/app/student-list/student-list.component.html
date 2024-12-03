@@ -1,0 +1,19 @@
+<p>students-list:</p>
+<ul class="list-group">
+    <li *ngFor="let student of studentsList" class="list-group-item">
+        <div class="row">
+            <button (click)="deleteStudent(student.id)">Delete the student</button>
+            <button (click)="editStudent(student)">Edit the student</button>
+            <b>Id:</b>{{student.id}}, 
+            <b>FirstName:</b>{{student.firstName}}, 
+            <b>LastName:</b>{{student.lastName}}, 
+        </div>
+    </li>
+</ul>
+
+<br>
+<student-details [student]="selectedStudent" (onSaveStudent)="saveStdtInList($event)"></student-details>
+<div class="fixed-bottom bg-dark text-white p-3">
+    <button (click)="addStudent()">Add a new student</button>
+</div>
+
