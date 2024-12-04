@@ -4,6 +4,7 @@ import {Student} from '../student.model'
 @Component({
   selector: 'student-list',
   templateUrl: './student-list.component.html',
+  styleUrls: ['./student-list.component.scss']
 })
 export class StudentsListComponent {
   studentsList: Student[] = [
@@ -21,7 +22,7 @@ export class StudentsListComponent {
       lastName: "Smith",
       phone: "234-567-8901",
       active: false,
-      marksAvg: 78,
+      marksAvg: 96,
       leaveDate: new Date("2024-11-22")
     },
     {

@@ -1,40 +1,42 @@
-<div class="card" *ngIf="student">
-    <div class="card-body">
-        <div class="form-group">
-            <label for="id">Student Id:</label>
-            <input type="number" class="form-control" id="id" [value]="student.id">
-        </div>
+<div class="container mt-5">
+    <div class="card shadow-lg p-4" *ngIf="student" style="border: 2px solid #ccc; border-radius: 8px;">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="id">Student Id:</label>
+                <input type="number" class="form-control" id="id" [value]="student.id">
+            </div>
 
-        <div class="form-group">
-            <label for="firstName">First Name:</label>
-            <input type="text" class="form-control" id="firstName" [value]="student.firstName">
-        </div>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" [value]="student.firstName">
+            </div>
 
-        <div class="form-group">
-            <label for="lastName">Last Name:</label>
-            <input type="text" class="form-control" id="lastName" [value]="student.lastName">
-        </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" [value]="student.lastName">
+            </div>
 
-        <div class="form-group">
-            <label for="phone">Phone:</label>
-            <input type="text" class="form-control" id="phone" [value]="student.phone">
-        </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="text" class="form-control" id="phone" [value]="student.phone">
+            </div>
 
-        <div class="form-group">
-            <label for="marksAvg">Average Marks:</label>
-            <input type="number" class="form-control" id="marksAvg" [value]="student.marksAvg">
-        </div>
+            <div class="form-group">
+                <label for="marksAvg">Average Marks:</label>
+                <input type="number" class="form-control" id="marksAvg" [value]="student.marksAvg">
+            </div>
 
-        <div class="form-group">
-            <label for="active">Is Active:</label>
-            <input type="checkbox" class="form-check-input" id="active" [value]="student.active">
-        </div>
+            <div class="form-group">
+                <label for="active">Is Active:</label>
+                <input type="checkbox" class="form-check-input" id="active" [checked]="student.active">
+            </div>
 
-        <div *ngIf="!student.active" class="form-group">
-            <label for="leaveDate">Date of Leave:</label>
-            <input type="date" class="form-control" id="leaveDate" [value]="student.leaveDate">
-        </div>
+            <div *ngIf="!student.active" class="form-group">
+                <label for="leaveDate">Date of Leave:</label>
+                <input type="date" class="form-control" id="leaveDate" [value]="student.leaveDate">
+            </div>
 
-        <button class="btn btn-primary" (click)="saveNewStudent()">Save</button>
+            <button class="btn btn-primary" (click)="saveNewStudent()">Save</button>
+        </div>
     </div>
 </div>
