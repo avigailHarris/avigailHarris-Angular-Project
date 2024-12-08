@@ -1,42 +1,92 @@
-<div class="container mt-5">
+<div class="container mt-5" *ngIf="student else noStudent">
     <div class="card shadow-lg p-4" *ngIf="student" style="border: 2px solid #ccc; border-radius: 8px;">
         <div class="card-body">
-            <div class="form-group">
-                <label for="id">Student Id:</label>
-                <input type="number" class="form-control" id="id" [value]="student.id">
-            </div>
+            <form [formGroup]="studentForm">
+                <div class="form-group">
+                    <label for="id">Student Id:</label>
+                    <input type="number" class="form-control" id="id" [value]="student.id"
+                    formControlName="id">
+                    <ng-container *ngIf="studentForm.controls['id'].errors">
+                        <div class="alert alert-danger" >This field is required</div>
+                    </ng-container>
+                </div>
 
-            <div class="form-group">
-                <label for="firstName">First Name:</label>
-                <input type="text" class="form-control" id="firstName" [value]="student.firstName">
-            </div>
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" [value]="student.firstName"
+                    formControlName="firstName">
+                    <ng-container *ngIf="studentForm.controls['firstName'].errors">
+                        <div class="alert alert-danger" *ngIf="studentForm.controls['firstName'].errors['required']">This field is required</div>
+                        <div class="alert alert-danger" *ngIf="studentForm.controls['firstName'].errors['minlength']">This field is must be at least
+                            2 chars</div>
+                    </ng-container>
+                </div>
 
-            <div class="form-group">
-                <label for="lastName">Last Name:</label>
-                <input type="text" class="form-control" id="lastName" [value]="student.lastName">
-            </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" [value]="student.lastName"
+                    formControlName="lastName">
+                    <ng-container *ngIf="studentForm.controls['firstName'].errors">
+                        <div class="alert alert-danger" >This field is must be the most
+                            20 chars</div>
+                    </ng-container>
+                </div>
 
-            <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="text" class="form-control" id="phone" [value]="student.phone">
-            </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="text" class="form-control" id="phone" [value]="student.phone"
+                    formControlName="phone">
+                    <ng-container *ngIf="studentForm.controls['phone'].errors">
+                        <div class="alert alert-danger" >This field is required</div>
+                    </ng-container>
+                </div>
 
-            <div class="form-group">
-                <label for="marksAvg">Average Marks:</label>
-                <input type="number" class="form-control" id="marksAvg" [value]="student.marksAvg">
-            </div>
+                <div class="form-group">
+                    <label for="marksAvg">Average Marks:</label>
+                    <input type="number" class="form-control" id="marksAvg" [value]="student.marksAvg"
+                    formControlName="marksAvg">
+                </div>
 
-            <div class="form-group">
-                <label for="active">Is Active:</label>
-                <input type="checkbox" class="form-check-input" id="active" [checked]="student.active">
-            </div>
+                <div class="form-group">
+                    <label for="active">Is Active:</label>
+                    <input type="checkbox" class="form-check-input" id="active" [checked]="student.active"
+                    formControlName="active">
+                    
+                </div>
 
-            <div *ngIf="!student.active" class="form-group">
-                <label for="leaveDate">Date of Leave:</label>
-                <input type="date" class="form-control" id="leaveDate" [value]="student.leaveDate">
-            </div>
+                <div *ngIf="!student.active" class="form-group">
+                    <label for="leaveDate">Date of Leave:</label>
+                    <input type="date" class="form-control" id="leaveDate" [value]="student.leaveDate"
+                    formControlName="leaveDate">
+                    
+                </div>
 
-            <button class="btn btn-primary" (click)="saveNewStudent()">Save</button>
+                <div class="form-group">
+                    <label for="studiesType">StudiesType:</label>
+                    <select class="form-control"
+                     formControlName="studiesType">
+                        <option *ngFor=" let type of getStudiesType()" [value]="type.id">{{type.name}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="studiesYear">StudiesYear:</label>
+                    <br>
+                    <input type="radio" value="studiesYear.firstYear" name="studiesYear" formControlName="studiesYear" />firstYear
+                    <br>
+                    <input type="radio" value="studiesYear.secondYear" name="studiesYear" formControlName="studiesYear" />secondYear
+                    <br>
+                    <input type="radio" value="studiesYear.thirdYear" name="studiesYear" formControlName="studiesYear" />thirdYear
+                </div>
+
+                <button class="btn btn-primary" (click)="saveNewStudent()" [disabled]="!studentForm.valid">Save</button>
+            </form>
         </div>
+        
     </div>
 </div>
+
+<ng-template #noStudent>
+    <div class="card">
+        No Student To Display
+    </div>

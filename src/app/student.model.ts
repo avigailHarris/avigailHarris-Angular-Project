@@ -6,7 +6,9 @@ export class Student {
     active?: boolean;
     marksAvg?: number;
     leaveDate?: Date;
-  
+    studiesType?: Type;
+    studiesYear?:Year;
+
     
     constructor(
       id: number = 0,            
@@ -15,7 +17,9 @@ export class Student {
       phone?: string, 
       active?: boolean, 
       marksAvg?: number, 
-      leaveDate?: Date
+      leaveDate?: Date,
+      studiesType?: Type,
+      studiesYear?:Year
     ) {
       this.id = id;
       this.firstName = firstName;
@@ -24,6 +28,22 @@ export class Student {
       this.active = active;
       this.marksAvg = marksAvg;
       this.leaveDate = leaveDate;
-    }
+      this.studiesType = studiesType
+      this.studiesYear = studiesYear
+  }
+}
+
+  export enum Type{
+    ComputerScience=1,
+    BusinessAdministration=2,
+    CivilEngineering=3,
+    EducationPsychology=4,
+    Law=5
+  }
+
+  export enum Year{
+    firstYear=1,
+    secondYear=2,
+    thirdYear=3
   }
   
