@@ -1,3 +1,5 @@
+import { Test } from "./test.model";
+
 export class Student {
     id: number;
     firstName?: string;
@@ -8,6 +10,7 @@ export class Student {
     leaveDate?: Date;
     studiesType?: Type;
     studiesYear?:Year;
+    testList?:Test[]
 
     
     constructor(
@@ -19,7 +22,8 @@ export class Student {
       marksAvg?: number, 
       leaveDate?: Date,
       studiesType?: Type,
-      studiesYear?:Year
+      studiesYear?:Year,
+      testList?:Test[]
     ) {
       this.id = id;
       this.firstName = firstName;
@@ -28,8 +32,9 @@ export class Student {
       this.active = active;
       this.marksAvg = marksAvg;
       this.leaveDate = leaveDate;
-      this.studiesType = studiesType
-      this.studiesYear = studiesYear
+      this.studiesType = studiesType;
+      this.studiesYear = studiesYear;
+      this.testList = testList;
   }
 }
 

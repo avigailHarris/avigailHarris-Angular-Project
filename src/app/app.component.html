@@ -3,5 +3,7 @@
 <br>
 <h2>Hello!!!</h2>
 <h3>{{timeCalculation()}}</h3>
-<student-list></student-list>
-
+<student-list (onSelectStudent)="showTests($event)"></student-list>
+<div *ngIf="selectedStudent">
+    <test-list [testsList]="selectedStudent.testList"></test-list>
+</div>

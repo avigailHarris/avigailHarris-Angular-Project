@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Student } from './models/student.model';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'my-app';
+
+  selectedStudent?: Student;
 
   timeCalculation(){
     const currentDate = new Date();
@@ -17,4 +21,10 @@ export class AppComponent {
     else
       return "Good evening:)"
   }
+
+  showTests(student: Student){
+    this.selectedStudent = student;
+
+  }
+  
 }

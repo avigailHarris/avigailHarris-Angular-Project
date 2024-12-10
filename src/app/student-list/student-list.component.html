@@ -1,13 +1,14 @@
-<p>students-list:</p>
+<p>Students-list:</p>
 <ul class="list-group">
     <li *ngFor="let student of studentsList" class="list-group-item" 
     [ngClass]="{'active':student.active,'success': student.marksAvg && student.marksAvg > 90}">
         <div class="card">
             <button (click)="deleteStudent(student.id)">Delete the student</button>
             <button (click)="editStudent(student)">Edit the student</button>
+            <button (click)="selectStdShowTests(student)">Show the tests</button>
             <b>Id:</b>{{student.id}}, 
             <b>FirstName:</b>{{student.firstName}}, 
-            <b>LastName:</b>{{student.lastName}}, 
+            <b>LastName:</b>{{student.lastName}}
         </div>
     </li>
 </ul>
@@ -17,6 +18,6 @@
     <button (click)="addStudent()">Add a new student</button>
 </div>
 <br>
-<student-details [student]="selectedStudent" (onSaveStudent)="saveStdtInList($event)"></student-details>
+<student-details [student]="selectedStudentDetails" (onSaveStudent)="saveStdtInList($event)"></student-details>
 
 

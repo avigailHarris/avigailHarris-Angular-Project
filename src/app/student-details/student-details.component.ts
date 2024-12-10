@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter} from '@angular/core';
-import { Student, Type, Year } from '../student.model';
+import { Student, Type, Year } from '../models/student.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({

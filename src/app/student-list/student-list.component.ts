@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import {Student} from '../student.model'
+import { Component, Output, EventEmitter } from '@angular/core';
+import {Student} from '../models/student.model'
+import { Test } from '../models/test.model';
 
 @Component({
   selector: 'student-list',
@@ -15,6 +16,11 @@ export class StudentsListComponent {
       phone: "123-456-7890",
       active: true,
       marksAvg: 85,
+      testList:[
+        new Test(1, new Date('2024-01-15'), 'ComputerScience', 85),
+        new Test(2, new Date('2024-02-20'), 'BusinessAdministration', 90),
+        new Test(3, new Date('2024-03-10'), 'CivilEngineering', 78),
+        new Test(7, new Date('2024-07-15'), 'BusinessAdministration', 87)]
     },
     {
       id: 2,
@@ -23,7 +29,10 @@ export class StudentsListComponent {
       phone: "234-567-8901",
       active: false,
       marksAvg: 96,
-      leaveDate: new Date("2024-11-22")
+      leaveDate: new Date("2024-11-22"),
+      testList:[new Test(4, new Date('2024-04-05'), 'EducationPsychology', 92),
+      new Test(5, new Date('2024-05-01'), 'Law', 88),
+      new Test(6, new Date('2024-06-10'), 'ComputerScience', 80)]
     },
     {
       id: 3,
@@ -32,6 +41,9 @@ export class StudentsListComponent {
       phone: "345-678-9012",
       active: true,
       marksAvg: 92,
+      testList:[new Test(4, new Date('2024-04-05'), 'EducationPsychology', 99),
+        new Test(5, new Date('2024-05-01'), 'Law', 93),
+        new Test(6, new Date('2024-06-10'), 'ComputerScience', 90)]
     },
     {
       id: 4,
@@ -41,6 +53,11 @@ export class StudentsListComponent {
       active: false,
       marksAvg: 88,
       leaveDate: new Date("2024-12-01")
+      ,
+      testList:[
+        new Test(1, new Date('2024-01-15'), 'ComputerScience', 71),
+        new Test(2, new Date('2024-02-20'), 'BusinessAdministration', 80),
+        ]
     },
     {
       id: 5,
@@ -52,9 +69,17 @@ export class StudentsListComponent {
     }
   ];
 
-  selectedStudent?: Student;
+  selectedStudentDetails?: Student;
+  selectedStudentTests?: Student;
+
+
+    @Output() 
+  onSelectStudent: EventEmitter<Student> = new EventEmitter<Student>(); 
+
+
 
   constructor() { }
+
 
   deleteStudent(id: number){
     let index = this.studentsList.findIndex(student => student.id === id);
@@ -62,16 +87,23 @@ export class StudentsListComponent {
   }
 
   editStudent(selectedStudent: Student){
-    this.selectedStudent=selectedStudent
+    this.selectedStudentDetails=selectedStudent
   }
 
   addStudent(){
-    this.selectedStudent=new Student();
+    this.selectedStudentDetails=new Student();
 
   }
   saveStdtInList(student: Student){
     this.studentsList.push(student)
-    this.selectedStudent=undefined;
+    this.selectedStudentDetails=undefined;
+  }
+
+  
+  
+  selectStdShowTests(selectedStudent: Student){
+    this.selectedStudentTests=selectedStudent;
+    this.onSelectStudent.emit(this.selectedStudentTests);
   }
   ngOnInit(): void {
 

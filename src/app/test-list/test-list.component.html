@@ -1,0 +1,19 @@
+<div class="container mt-5" *ngIf="testsList && testsList.length > 0; else noTests">
+    <p>Tests-list:</p>
+    <ul class="list-group">
+        <li *ngFor="let test of testsList" class="list-group-item">
+            <div class="card">
+                <b>Test id: </b>{{test.id}}, 
+                <b>Description: </b>{{test.description}}, 
+                <b>Date: </b>{{test.date}}, 
+                <b>Mark: </b>{{test.mark}}
+            </div>
+        </li>
+    </ul>
+</div>
+
+<ng-template #noTests>
+    <div class="card">
+        This student has not been tested yet    
+    </div>
+</ng-template>
