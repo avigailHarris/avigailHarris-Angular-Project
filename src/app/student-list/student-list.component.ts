@@ -74,7 +74,7 @@ export class StudentsListComponent {
 
 
     @Output() 
-  onSelectStudent: EventEmitter<Student> = new EventEmitter<Student>(); 
+  onShowTests: EventEmitter<Student> = new EventEmitter<Student>(); 
 
 
 
@@ -103,7 +103,7 @@ export class StudentsListComponent {
   
   selectStdShowTests(selectedStudent: Student){
     this.selectedStudentTests=selectedStudent;
-    this.onSelectStudent.emit(this.selectedStudentTests);
+    this.onShowTests.emit(this.selectedStudentTests);
   }
   ngOnInit(): void {
 
