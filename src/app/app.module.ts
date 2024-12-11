@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms'; // הוספת הייבוא
 import { StudentsListComponent } from './student-list/student-list.component';
 import { StudentDetailsComponent } from './student-details/student-details.component';
 import { TestListComponent } from './test-list/test-list.component'; 
+import { StudentService } from "./student.service";
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import { TestListComponent } from './test-list/test-list.component';
         BrowserModule,
         ReactiveFormsModule 
     ],
+    providers:[StudentService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
