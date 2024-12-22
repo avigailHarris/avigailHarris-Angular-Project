@@ -5,5 +5,5 @@
 <h3>{{timeCalculation()}}</h3>
 <student-list (onShowTests)="showTests($event)"></student-list>
 <div *ngIf="selectedStudent">
-    <test-list [testsList]="selectedStudent.testList"></test-list>
+    <test-list [StdehowTests]="selectedStudent"></test-list>
 </div>

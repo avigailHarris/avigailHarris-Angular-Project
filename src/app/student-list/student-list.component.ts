@@ -8,11 +8,12 @@ import { StudentService } from '../student.service';
   styleUrls: ['./student-list.component.scss']
 })
 export class StudentsListComponent {
-  studentsList: Student[] = this._studentService.getStudents();
+  studentsList: Student[] = [];
 
   selectedStudentDetails?: Student;
   selectedStudentTests?: Student;
 
+  typeDetais:string = "add";
 
   @Output() 
   onShowTests: EventEmitter<Student> = new EventEmitter<Student>(); 
@@ -27,28 +28,42 @@ export class StudentsListComponent {
     this.studentsList.splice(index, 1); 
   }
 
-  editStudent(selectedStudent: Student){
-    this.selectedStudentDetails=selectedStudent
+  clickEditStudent(selectedStudent: Student){
+    this.typeDetais = "update";
+    this.selectedStudentDetails = selectedStudent;
   }
 
-  addStudent(){
+  clickAddStudent(){
+    this.typeDetais = "add";
     this.selectedStudentDetails=new Student();
 
   }
-  saveStdtInList(student: Student){
+  addStdtInList(student: Student){
     this.studentsList.push(student)
     this.selectedStudentDetails=undefined;
   }
 
+  updateStdtInList(updatedStudent: Student){
+    const index = this.studentsList.findIndex(student => student.id === updatedStudent.id);
+    if (index !== -1) 
+      this.studentsList[index] = updatedStudent;
   
-  
+}
+    
   selectStdShowTests(selectedStudent: Student){
     this.selectedStudentTests=selectedStudent;
     this.onShowTests.emit(this.selectedStudentTests);
   }
+
+  numMissingDays(id: number): number{
+    
+    return this._studentService.getSumMissingDays(id);
+  }
+
   ngOnInit(): void {
+    this._studentService.getStudentsByPromise().then((data)=>{
+    this.studentsList = data;
+    });
 
   }
 }
-
-

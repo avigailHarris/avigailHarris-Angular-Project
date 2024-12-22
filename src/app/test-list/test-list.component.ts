@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Test } from '../models/test.model';
+import { StudentService } from '../student.service';
+import { Student } from '../models/student.model';
 
 @Component({
   selector: 'test-list',
@@ -9,11 +11,14 @@ import { Test } from '../models/test.model';
 export class TestListComponent {
 
   @Input()
-  testsList: Test[] | undefined;
+  StdehowTests: Student | undefined;
 
 
+  constructor(private _studentService: StudentService){}
 
-
+  getMarkAvg(id: number): number{
+    return this._studentService.getAvg(id);
+  }
 }
 
 

@@ -1,3 +1,4 @@
+
 <div class="container mt-5" *ngIf="student else noStudent">
     <div class="card shadow-lg p-4" *ngIf="student" style="border: 2px solid #ccc; border-radius: 8px;">
         <div class="card-body">
@@ -78,13 +79,29 @@
                     <br>
                     <input type="radio" value="studiesYear.thirdYear" name="studiesYear" formControlName="studiesYear" />thirdYear
                 </div>
+<br>
+            <h3>Total Absence Days So Far: {{totalMissingDays}}</h3>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="missingDate">Date of the first missing day:</label>
+                        <input type="date" class="form-control" id="missingDate" formControlName="missingDate">
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="numOfMsgDays">Number of the missing days:</label>
+                        <input type="number" class="form-control" id="numOfMsgDays" formControlName="numOfMsgDays">
+                      </div>
+                </div>
 
-                <button class="btn btn-primary" (click)="saveNewStudent()" [disabled]="!studentForm.valid">Save</button>
+                <button *ngIf="type == 'add'" class="btn btn-primary" (click)="saveStudent()" [disabled]="!studentForm.valid">Save</button>
+                <button *ngIf="type == 'update'" class="btn btn-primary" (click)="updateStudent()" [disabled]="!studentForm.valid">Update</button>
+
             </form>
         </div>
         
     </div>
 </div>
+
 
 <ng-template #noStudent>
     <div class="card">

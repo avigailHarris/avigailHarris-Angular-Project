@@ -1,42 +1,46 @@
 import { Test } from "./test.model";
+import { MissimgDays } from "./missimgDays.model";
 
 export class Student {
-    id: number;
-    firstName?: string;
-    lastName?: string;
-    phone?: string;
-    active?: boolean;
-    marksAvg?: number;
-    leaveDate?: Date;
-    studiesType?: Type;
-    studiesYear?:Year;
-    testList?:Test[]
+  id: number;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  active?: boolean;
+  marksAvg?: number;
+  leaveDate?: Date;
+  studiesType?: Type;
+  studiesYear?: Year;
+  testList?: Test[];
+  missimgDays: MissimgDays[] = [];  
 
-    
-    constructor(
-      id: number = 0,            
-      firstName?: string, 
-      lastName?: string, 
-      phone?: string, 
-      active?: boolean, 
-      marksAvg?: number, 
-      leaveDate?: Date,
-      studiesType?: Type,
-      studiesYear?:Year,
-      testList?:Test[]
-    ) {
-      this.id = id;
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.phone = phone;
-      this.active = active;
-      this.marksAvg = marksAvg;
-      this.leaveDate = leaveDate;
-      this.studiesType = studiesType;
-      this.studiesYear = studiesYear;
-      this.testList = testList;
+  constructor(
+    id: number = 0,            
+    firstName?: string, 
+    lastName?: string, 
+    phone?: string, 
+    active?: boolean, 
+    marksAvg?: number, 
+    leaveDate?: Date,
+    studiesType?: Type,
+    studiesYear?: Year,
+    testList?: Test[],
+    missimgDays: MissimgDays[] = []  
+  ) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.phone = phone;
+    this.active = active;
+    this.marksAvg = marksAvg;
+    this.leaveDate = leaveDate;
+    this.studiesType = studiesType;
+    this.studiesYear = studiesYear;
+    this.testList = testList;
+    this.missimgDays = missimgDays;  
   }
 }
+
 
   export enum Type{
     ComputerScience=1,

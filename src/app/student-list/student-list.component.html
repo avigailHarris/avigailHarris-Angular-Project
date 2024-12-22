@@ -4,20 +4,21 @@
     [ngClass]="{'active':student.active,'success': student.marksAvg && student.marksAvg > 90}">
         <div class="card">
             <button (click)="deleteStudent(student.id)">Delete the student</button>
-            <button (click)="editStudent(student)">Edit the student</button>
+            <button (click)="clickEditStudent(student)">Edit the student</button>
             <button (click)="selectStdShowTests(student)">Show the tests</button>
             <b>Id:</b>{{student.id}}, 
             <b>FirstName:</b>{{student.firstName}}, 
-            <b>LastName:</b>{{student.lastName}}
+            <b>LastName:</b>{{student.lastName}},
+            <b>missing Days:</b>{{numMissingDays(student.id)}}
         </div>
     </li>
 </ul>
 
 <br>
 <div class="fixed-bottom bg-dark text-white p-3">
-    <button (click)="addStudent()">Add a new student</button>
+    <button (click)="clickAddStudent()">Add a new student</button>
 </div>
 <br>
-<student-details [student]="selectedStudentDetails" (onSaveStudent)="saveStdtInList($event)"></student-details>
+<student-details [student]="selectedStudentDetails" (onAddStudent)="addStdtInList($event)" (onEditStudent)="updateStdtInList($event)" [type]=typeDetais></student-details>
 
 
