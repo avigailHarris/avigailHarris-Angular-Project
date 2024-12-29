@@ -50,7 +50,8 @@ export class StudentDetailsComponent {
     if (this.student != undefined){
       
       this.studentForm = new FormGroup({
-        id: new FormControl({ value: this.student.id, disabled: this.type === 'update' },Validators.required),        "firstName": new FormControl(this.student.firstName,[Validators.required, Validators.minLength(2)]),
+        id: new FormControl({ value: this.student.id, disabled: this.type === 'update' },Validators.required),        
+        "firstName": new FormControl(this.student.firstName,[Validators.required, Validators.minLength(2)]),
         "lastName": new FormControl(this.student.lastName, Validators.maxLength(20)),
         "phone": new FormControl(this.student.phone,Validators.required),
         "marksAvg": new FormControl(this.student.marksAvg),

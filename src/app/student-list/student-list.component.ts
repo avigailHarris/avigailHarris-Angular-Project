@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import {Student} from '../models/student.model'
 import { StudentService } from '../student.service';
+import { filter, from, Observable } from 'rxjs';
 
 @Component({
   selector: 'student-list',
@@ -59,6 +60,48 @@ export class StudentsListComponent {
     
     return this._studentService.getSumMissingDays(id);
   }
+
+  sendEmail(): void {
+
+    let studentSource: Observable<Student> = new Observable(obs => {
+      for (let i = 0; i < this._studentService.getNumOfStudents(); i++) {
+        let std = this._studentService.getStudents()[i];
+        if (std.active)
+          obs.next(std);
+      }
+      obs.complete(); 
+    });
+
+    let toAlert: string = ""; 
+  
+    studentSource.subscribe({
+      next: (student) => {
+        toAlert += `${student.firstName} ${student.lastName} got the email.\n`;
+      },
+      complete: () => {
+        alert(toAlert);
+      }
+    });
+  }
+  
+  sendEmailByFrom(): void {
+
+    let studentSourceByFrom: Observable<Student> = from(this._studentService.getStudents()).pipe(
+      filter((value: Student): value is Student =>  value.active === true) 
+    );
+
+    let toAlert: string = ""; 
+
+    studentSourceByFrom.subscribe({
+      next: (student) => {
+        toAlert += `${student.firstName} ${student.lastName} got the email.\n`;
+      },
+      complete: () => {
+        alert(toAlert);
+      }
+    });
+  }
+  
 
   ngOnInit(): void {
     this._studentService.getStudentsByPromise().then((data)=>{

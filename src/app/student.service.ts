@@ -4,10 +4,10 @@ import { Test } from "./models/test.model";
 
 export class StudentService{
 
-  studendsList = [
+  private studendsList = [
     {
       id: 1,
-      firstName: "John",
+      firstName: "Jane",
       lastName: "Doe",
       phone: "123-456-7890",
       active: true,
@@ -21,7 +21,7 @@ export class StudentService{
     },
     {
       id: 2,
-      firstName: "Jane",
+      firstName: "Joh",
       lastName: "Smith",
       phone: "234-567-8901",
       active: false,

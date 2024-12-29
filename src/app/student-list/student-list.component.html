@@ -19,6 +19,10 @@
     <button (click)="clickAddStudent()">Add a new student</button>
 </div>
 <br>
+<button (click)="sendEmailByFrom()">Send email to the active students</button>
+
+<br>
+<br>
 <student-details [student]="selectedStudentDetails" (onAddStudent)="addStdtInList($event)" (onEditStudent)="updateStdtInList($event)" [type]=typeDetais></student-details>
 
 
