@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Student } from '../models/student.model';
 import { StudentService } from '../student.service';
-import { Observable, from, filter, Subject, debounceTime, switchMap, distinctUntilChanged } from 'rxjs';
+import { Observable, from, filter, Subject, debounceTime, switchMap, distinctUntilChanged, mergeMap, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'student-list',
@@ -42,13 +42,22 @@ export class StudentsListComponent {
   //       console.log(err);
   // })
 
-    this.searchSubject.pipe(
-      debounceTime(1000), 
-      distinctUntilChanged(), 
-      switchMap((term: string) => this._studentService.search(term)) 
-    ).subscribe((results: Student[]) => {
-      this.studentsList = results; 
-    });
+  this.searchSubject.pipe(
+    debounceTime(1000), 
+    distinctUntilChanged(),
+    switchMap((term: string) => {
+      return this._studentService.search(term).pipe(
+        catchError((err) => {
+          console.error('Search error:', err);
+          alert("Sorry, there was an error while searching students with the server.");
+          return of([]);
+        })
+      );
+    })
+  ).subscribe((data: Student[]) => {
+    this.studentsList = data;
+  });
+  
   }
 
   showActiveStudents(checked: boolean){
