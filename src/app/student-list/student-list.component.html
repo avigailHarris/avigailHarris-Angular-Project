@@ -1,11 +1,24 @@
 <p>Students-list:</p>
+<div class="form-group">
+    <label for="active">Present Active Student:</label>
+    <input type="checkbox" #chb class="form-check-input" id="active" (change)="showActiveStudents(chb.checked)">
+    
+</div>
+
+<div class="form-group">
+    <label for="">Search Student By Name</label>
+    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" placeholder="Search...">
+</div>
+
 <ul class="list-group">
     <li *ngFor="let student of studentsList" class="list-group-item" 
     [ngClass]="{'active':student.active,'success': student.marksAvg && student.marksAvg > 90}">
         <div class="card">
-            <button (click)="deleteStudent(student.id)">Delete the student</button>
-            <button (click)="clickEditStudent(student)">Edit the student</button>
-            <button (click)="selectStdShowTests(student)">Show the tests</button>
+            <button (click)="deleteStudent(student.id)">Delete the Student</button>
+            <button (click)="deleteStudentToServer(student.id)">Delete the Student from Server List</button>
+            <button (click)="clickEditStudent(student)">Edit the Student</button>
+            <button (click)="clickEditStudentToServer(student)">Edit the Student to Server List</button>
+            <button (click)="selectStdShowTests(student)">Show the Tests</button>
             <b>Id:</b>{{student.id}}, 
             <b>FirstName:</b>{{student.firstName}}, 
             <b>LastName:</b>{{student.lastName}},
@@ -18,11 +31,14 @@
 <div class="fixed-bottom bg-dark text-white p-3">
     <button (click)="clickAddStudent()">Add a new student</button>
 </div>
+<div class="fixed-bottom bg-dark text-white p-3">
+    <button (click)="addStudentToServer()">Add a new student in the servaer</button>
+</div>
 <br>
 <button (click)="sendEmailByFrom()">Send email to the active students</button>
 
 <br>
 <br>
-<student-details [student]="selectedStudentDetails" (onAddStudent)="addStdtInList($event)" (onEditStudent)="updateStdtInList($event)" [type]=typeDetais></student-details>
+<student-details [student]="selectedStudentDetails" (onAddStudent)="addStdtInList($event)" (onAddStudentToServer)="saveNewStdToServer($event)" (onEditStudent)="updateStdtInList($event)" (onEditStudentToServer)="updateStdtToServer($event)"[type]=typeDetais></student-details>
 
 

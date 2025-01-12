@@ -1,6 +1,14 @@
+import { observableToBeFn } from "rxjs/internal/testing/TestScheduler";
 import { MissimgDays } from "./models/missimgDays.model";
 import { Student } from "./models/student.model";
 import { Test } from "./models/test.model";
+import { Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+
+@Injectable({
+  providedIn: 'root' 
+})
 
 export class StudentService{
 
@@ -106,4 +114,29 @@ export class StudentService{
       return 0;
 
   }
+
+  getStudentsFromServer(checked: boolean = false): Observable<Student[]> {
+    return this._http.get<Student[]>("api/Students?=" + checked);
+  }
+
+  addStudentToServer(student: Student): Observable<boolean> {
+    return this._http.post<boolean>("api/Students", student);
+  }
+
+  updateStudentToServer(student: Student):
+  Observable<boolean> {
+    return this._http.post<boolean>("api/Students", [student.id, student]);
+  }
+
+  deleteStudentToServer(id: number):Observable<boolean> {
+    return this._http.delete<boolean>("api/Students?="+id);
+  }
+
+  search(term: string) {
+    return this._http.get<any[]>(`api/search?query=${term}`)}
+
+
+constructor(private _http: HttpClient){
+
+}
 }

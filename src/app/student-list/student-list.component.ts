@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import {Student} from '../models/student.model'
+import { Student } from '../models/student.model';
 import { StudentService } from '../student.service';
-import { filter, from, Observable } from 'rxjs';
+import { Observable, from, filter, Subject, debounceTime, switchMap, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'student-list',
@@ -10,70 +10,172 @@ import { filter, from, Observable } from 'rxjs';
 })
 export class StudentsListComponent {
   studentsList: Student[] = [];
-
   selectedStudentDetails?: Student;
   selectedStudentTests?: Student;
-
-  typeDetais:string = "add";
+  typeDetais: string = "add";
 
   @Output() 
   onShowTests: EventEmitter<Student> = new EventEmitter<Student>(); 
 
+  @Output() 
+  onAddStudent: EventEmitter<Student> = new EventEmitter<Student>(); 
 
+  @Output() 
+  onEditStudent: EventEmitter<Student> = new EventEmitter<Student>();  
 
-  constructor(private _studentService: StudentService){ }
+  searchTerm: string = ''; 
+  private searchSubject: Subject<string> = new Subject();
 
+  constructor(private _studentService: StudentService) { }
 
-  deleteStudent(id: number){
-    let index = this.studentsList.findIndex(student => student.id === id);
-    this.studentsList.splice(index, 1); 
+  ngOnInit(): void {
+    this._studentService.getStudentsByPromise().then((data) => {
+      this.studentsList = data;
+    }).catch(err => {
+      console.error("Error loading students:", err);
+      alert("There was an issue loading the students data.");
+    });
+  //   this._studentService.getStudentsFromServer().subscribe(data => {
+  //     this.studentsList = data;
+  //   }, err =>{
+  //     alert("Sory, Something Worng with Students List");
+  //       console.log(err);
+  // })
+
+    this.searchSubject.pipe(
+      debounceTime(1000), 
+      distinctUntilChanged(), 
+      switchMap((term: string) => this._studentService.search(term)) 
+    ).subscribe((results: Student[]) => {
+      this.studentsList = results; 
+    });
   }
 
-  clickEditStudent(selectedStudent: Student){
+  showActiveStudents(checked: boolean){
+    this._studentService.getStudentsFromServer(checked).subscribe(data => {
+      this.studentsList = data;
+    });
+  }
+
+  deleteStudent(id: number) {
+    let index = this.studentsList.findIndex(student => student.id === id);
+    if (index !== -1) {
+      this.studentsList.splice(index, 1); 
+    }
+  }
+
+  deleteStudentToServer(id: number) {
+    this._studentService.deleteStudentToServer(id).subscribe(data => {
+      if( data){
+        let index = this.studentsList.findIndex(student => student.id === id);
+        if (index !== -1) {
+          this.studentsList.splice(index, 1); }
+        }
+      else {
+        console.error("There was an issue removing the student to the server.");
+        alert("There was an issue removing the student to the server.");
+      }}
+    ,
+    err => {
+      console.error("Error while saving student to server: ", err);
+      alert("Sorry, there was an error while adding the student to the server.");
+    })
+  
+  }
+
+  clickEditStudent(selectedStudent: Student) {
     this.typeDetais = "update";
     this.selectedStudentDetails = selectedStudent;
   }
 
-  clickAddStudent(){
+  clickEditStudentToServer(updatedStudent: Student) {
+    this.typeDetais = "updateToServer";
+    this.selectedStudentDetails = updatedStudent;
+  }
+
+  clickAddStudent() {
     this.typeDetais = "add";
-    this.selectedStudentDetails=new Student();
-
-  }
-  addStdtInList(student: Student){
-    this.studentsList.push(student)
-    this.selectedStudentDetails=undefined;
+    this.selectedStudentDetails = new Student();
   }
 
-  updateStdtInList(updatedStudent: Student){
+  addStudentToServer() {
+    this.typeDetais = "addToServer";
+    this.selectedStudentDetails = new Student();
+  }
+
+  addStdtInList(student: Student) {
+    this.studentsList.push(student);
+    this.selectedStudentDetails = undefined;
+  }
+
+  saveNewStdToServer(student: Student): void {
+    this._studentService.addStudentToServer(student).subscribe(
+      data => {
+        if (data) {
+          this.studentsList.push(student);
+          alert("Hi " + student.firstName + ", Your details have been updated in the system :)");
+        } else {
+          console.error("There was an issue adding the student to the server.");
+          alert("There was an issue adding the student to the server.");
+        }
+      },
+      err => {
+        console.error("Error while saving student to server: ", err);
+        alert("Sorry, there was an error while adding the student to the server.");
+      }
+    );
+  }
+
+  updateStdtInList(updatedStudent: Student) {
     const index = this.studentsList.findIndex(student => student.id === updatedStudent.id);
-    if (index !== -1) 
-      this.studentsList[index] = updatedStudent;
+    if (index !== -1) {
+      this.studentsList[index] = updatedStudent;  
+    }
+  }
   
-}
-    
-  selectStdShowTests(selectedStudent: Student){
-    this.selectedStudentTests=selectedStudent;
+  updateStdtToServer(updatedStudent: Student) {
+    this._studentService.updateStudentToServer(updatedStudent).subscribe(
+      data => {
+        if (data) {
+          const index = this.studentsList.findIndex(student => student.id === updatedStudent.id);
+          if (index !== -1) {
+            this.studentsList[index] = updatedStudent;  
+          }
+          alert("Hi " + updatedStudent.firstName + ", Your details have been updated in the system :)");
+        } 
+        else {
+          console.error("There was an issue updating the student to the server.");
+          alert("There was an issue updating the student to the server.");
+        }
+      },
+      err => {
+        console.error("Error while updating student to server: ", err);
+        alert("Sorry, there was an error while updating the student to the server.");
+      }
+    );
+  }
+
+  selectStdShowTests(selectedStudent: Student) {
+    this.selectedStudentTests = selectedStudent;
     this.onShowTests.emit(this.selectedStudentTests);
   }
 
-  numMissingDays(id: number): number{
-    
+  numMissingDays(id: number): number {
     return this._studentService.getSumMissingDays(id);
   }
 
   sendEmail(): void {
-
     let studentSource: Observable<Student> = new Observable(obs => {
       for (let i = 0; i < this._studentService.getNumOfStudents(); i++) {
         let std = this._studentService.getStudents()[i];
         if (std.active)
           obs.next(std);
       }
-      obs.complete(); 
+      obs.complete();
     });
 
-    let toAlert: string = ""; 
-  
+    let toAlert: string = "";
+
     studentSource.subscribe({
       next: (student) => {
         toAlert += `${student.firstName} ${student.lastName} got the email.\n`;
@@ -83,14 +185,13 @@ export class StudentsListComponent {
       }
     });
   }
-  
-  sendEmailByFrom(): void {
 
+  sendEmailByFrom(): void {
     let studentSourceByFrom: Observable<Student> = from(this._studentService.getStudents()).pipe(
-      filter((value: Student): value is Student =>  value.active === true) 
+      filter((value: Student): value is Student => value.active === true)
     );
 
-    let toAlert: string = ""; 
+    let toAlert: string = "";
 
     studentSourceByFrom.subscribe({
       next: (student) => {
@@ -101,12 +202,32 @@ export class StudentsListComponent {
       }
     });
   }
-  
 
-  ngOnInit(): void {
-    this._studentService.getStudentsByPromise().then((data)=>{
-    this.studentsList = data;
-    });
-
+  handleAddStudent(newStudent: Student): void {
+    this.studentsList.push(newStudent); 
   }
+
+  handleEditStudent(updatedStudent: Student): void {
+    const index = this.studentsList.findIndex(student => student.id === updatedStudent.id);
+    if (index !== -1) {
+      this.studentsList[index] = updatedStudent;  
+    }
+  }
+
+  handleEditStudentToServer(updatedStudent: Student): void {
+    const index = this.studentsList.findIndex(student => student.id === updatedStudent.id);
+    if (index !== -1) {
+      this.studentsList[index] = updatedStudent;  
+    }
+  }
+
+  handleSaveStudentToServer(updatedList: Student[]): void {
+    this.studentsList = updatedList; 
+  }
+
+  onSearchChange(value: string): void {
+    this.searchSubject.next(value); 
+  }
+  
+  
 }

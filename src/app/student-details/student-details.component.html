@@ -94,7 +94,9 @@
                 </div>
 
                 <button *ngIf="type == 'add'" class="btn btn-primary" (click)="saveStudent()" [disabled]="!studentForm.valid">Save</button>
+                <button *ngIf="type == 'addToServer'" class="btn btn-primary" (click)="AddStudentToServer()" [disabled]="!studentForm.valid">Save in Server</button>
                 <button *ngIf="type == 'update'" class="btn btn-primary" (click)="updateStudent()" [disabled]="!studentForm.valid">Update</button>
+                <button *ngIf="type == 'updateToServer'" class="btn btn-primary" (click)="updateStudentToServer()" [disabled]="!studentForm.valid">Update in Server</button>
 
             </form>
         </div>
