@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Student } from '../models/student.model';
+import { Student } from '../student.model';
 import { StudentService } from '../student.service';
 import { Observable, from, filter, Subject, debounceTime, switchMap, distinctUntilChanged, mergeMap, catchError, of } from 'rxjs';
 
@@ -50,7 +50,7 @@ export class StudentsListComponent {
         catchError((err) => {
           console.error('Search error:', err);
           alert("Sorry, there was an error while searching students with the server.");
-          return of([]);
+          return of(this.studentsList);
         })
       );
     })

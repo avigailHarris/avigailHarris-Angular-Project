@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Student, Type, Year } from '../models/student.model';
+import { Student, Type, Year } from '../../students/student.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { StudentService } from '../student.service';
-import { MissimgDays } from '../models/missimgDays.model';
+import { StudentService } from '../../students/student.service';
+import { MissimgDays } from '../missimgDays.model';
 
 @Component({
   selector: 'student-details',

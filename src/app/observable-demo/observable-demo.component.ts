@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { StudentService } from '../student.service';
+import { StudentService } from '../modules/students/student.service';
 import { from, interval, map, Observable } from 'rxjs';
-import { Student } from '../models/student.model';
+import { Student } from '../modules/students/student.model';
 
 @Component({
   selector: 'app-observable-demo',

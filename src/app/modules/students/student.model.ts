@@ -1,5 +1,5 @@
-import { Test } from "./test.model";
-import { MissimgDays } from "./missimgDays.model";
+import { Test } from "../../models/test.model";
+import { MissimgDays } from "../students/missimgDays.model";
 
 export class Student {
   id: number;

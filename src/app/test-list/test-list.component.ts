@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Test } from '../models/test.model';
-import { StudentService } from '../student.service';
-import { Student } from '../models/student.model';
+import { StudentService } from '../modules/students/student.service';
+import { Student } from '../modules/students/student.model';
 
 @Component({
   selector: 'test-list',

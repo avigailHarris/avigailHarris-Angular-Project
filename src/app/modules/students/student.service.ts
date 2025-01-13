@@ -1,7 +1,6 @@
-import { observableToBeFn } from "rxjs/internal/testing/TestScheduler";
-import { MissimgDays } from "./models/missimgDays.model";
-import { Student } from "./models/student.model";
-import { Test } from "./models/test.model";
+import { MissimgDays } from "./missimgDays.model";
+import { Student } from "./student.model";
+import { Test } from "../../models/test.model";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";

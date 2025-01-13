@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Student } from './models/student.model';
-import { Input } from '@angular/core';
+import { Student } from './modules/students/student.model';
 
 @Component({
   selector: 'app-root',
