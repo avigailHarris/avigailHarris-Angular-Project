@@ -4,6 +4,7 @@ import { StudentsListComponent } from "./modules/students/student-list/student-l
 import { StudentDetailsComponent } from "./modules/students/student-details/student-details.component";
 import { HomeComponent } from "./home/home.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { LoginService } from "./login/login.service";
 
 const APPROTES: Route[]=[
     {"path": "", redirectTo: "home", "pathMatch": "full"},
@@ -11,6 +12,7 @@ const APPROTES: Route[]=[
     {"path": "studentsList", component: StudentsListComponent},
     {"path": "studentDetails", component: StudentDetailsComponent},
     {"path": "studentDetails/:id", component: StudentDetailsComponent},
+    {"path": "setting", loadChildren: ()=> import("./modules/settings/setting-routing.module").then(m => m.SettingRoutingModule),canActivate: [LoginService] },
     {"path": "**", component: PageNotFoundComponent},
 ]
 

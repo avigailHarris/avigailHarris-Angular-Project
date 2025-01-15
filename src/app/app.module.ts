@@ -11,6 +11,10 @@ import { StudentsModule } from "./modules/students/students.module";
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppRoutingModule  } from "./app-routing.module";
+import { AccountComponent } from './modules/settings/account/account.component';
+import { FavoritesComponent } from './modules/settings/favorites/favorites.component';
+import { ProfileComponent } from './modules/settings/profile/profile.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -18,7 +22,11 @@ import { AppRoutingModule  } from "./app-routing.module";
         AppComponent,
         ObservableDemoComponent,
         HomeComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
+        AccountComponent,
+        FavoritesComponent,
+        ProfileComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
