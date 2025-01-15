@@ -123,7 +123,10 @@ export class StudentDetailsComponent {
     if (this.isUpdate) {
       this.saveUpdatedStudent(studentToSave);
     } else {
-      this.saveNewStudent(studentToSave);
+      if( this.type == 'addToServer')
+        this.saveNewStudentToServer(studentToSave);
+      else
+        this.saveNewStudent(studentToSave);
     }
   }
 
@@ -132,6 +135,13 @@ export class StudentDetailsComponent {
     alert("Hi " + newStudent.firstName + ", Your details have been added in the system :)");
   }
 
+
+  saveNewStudentToServer(newStudent: Student): void {
+    
+    this.onAddStudentToServer.emit(newStudent); 
+    alert("Hi " + newStudent.firstName + ", Your details have been added in the system :)"); 
+    
+  }  
   saveUpdatedStudent(updatedStudent: Student): void {
   this._studentService.updateStudent(updatedStudent);  
     alert("Hi " + updatedStudent.firstName + ", Your details have been updated in the system :)");
