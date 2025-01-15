@@ -8,20 +8,25 @@ import { StudentService } from "./modules/students/student.service";
 import { ObservableDemoComponent } from './observable-demo/observable-demo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { StudentsModule } from "./modules/students/students.module";
+import { HomeComponent } from './home/home.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AppRoutingModule  } from "./app-routing.module";
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        TestListComponent,
-        ObservableDemoComponent
+        ObservableDemoComponent,
+        HomeComponent,
+        PageNotFoundComponent
     ],
     imports: [
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule, 
         FormsModule,
-        StudentsModule
+        StudentsModule,
+        AppRoutingModule 
     ],
     providers:[StudentService],
     bootstrap: [AppComponent]

@@ -1,8 +1,10 @@
+
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Student, Type, Year } from '../../students/student.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../students/student.service';
 import { MissimgDays } from '../missimgDays.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'student-details',
@@ -15,7 +17,21 @@ export class StudentDetailsComponent {
   studiesType = Type;
   missingFromDate?: Date;
   numOfDays?: number;
+  isUpdate: boolean = false;
+
   @Input() type: string | undefined;
+
+  ngOnInit(): void {
+    this._acr.paramMap.subscribe( paramMap => {
+      if(paramMap.has("id")) {
+        const id = paramMap.get("id");
+        if (id !== null) {
+          this.isUpdate = true;
+          this.student = this._studentService.getStudentById(+id);          
+        }
+      }
+    })
+  }
 
   getStudiesType() {
     let typeOptions = Object.keys(Type)
@@ -35,6 +51,7 @@ export class StudentDetailsComponent {
   @Input()
   public set student(value: Student | undefined) {
     this._student = value;
+    
     if (this.student != undefined) {
       this.studentForm = new FormGroup({
         id: new FormControl({ value: this.student.id, disabled: this.type === 'update' }, Validators.required),        
@@ -69,17 +86,12 @@ export class StudentDetailsComponent {
   @Output()
   onAddStudentToServer: EventEmitter<Student> = new EventEmitter<Student>();
 
-  @Output() 
-  onEditStudent: EventEmitter<Student> = new EventEmitter<Student>();
-
   @Output()
   onEditStudentToServer: EventEmitter<Student> = new EventEmitter<Student>();
 
-  
+  constructor(private _studentService: StudentService, private _acr: ActivatedRoute, private _router: Router) { }
 
-  constructor(private _studentService: StudentService) { }
-
-  saveStudent(): void {
+  onSubmit(): void {
     if (!this.studentForm.valid) {
       console.log('Form is invalid');
       return;
@@ -87,107 +99,43 @@ export class StudentDetailsComponent {
 
     const formValues = this.studentForm.value;
 
-    const newStudent: Student = {
-      ...formValues,
-      id: this._studentService.getStudents()[this._studentService.getNumOfStudents() - 1].id + 1,
-      missimgDays: [] 
-    };
+    let studentToSave: Student;
+
+    if (this.isUpdate) {
+      studentToSave = {
+        ...formValues,
+        id: this.student?.id,
+        missimgDays: this.student?.missimgDays || []
+      };
+    } else {
+      studentToSave = {
+        ...formValues,
+        id: this._studentService.getStudents()[this._studentService.getNumOfStudents() - 1].id + 1,
+        missimgDays: []
+      };
+    }
 
     if (formValues.missingDate && formValues.numOfMsgDays) {
       const newMissimgDay = new MissimgDays(formValues.missingDate, formValues.numOfMsgDays);
-      newStudent.missimgDays.push(newMissimgDay); 
+      studentToSave.missimgDays.push(newMissimgDay);
     }
 
-    this.saveNewStudent(newStudent);
+    if (this.isUpdate) {
+      this.saveUpdatedStudent(studentToSave);
+    } else {
+      this.saveNewStudent(studentToSave);
+    }
   }
-
-
 
   saveNewStudent(newStudent: Student): void {
     this.onAddStudent.emit(newStudent);
     alert("Hi " + newStudent.firstName + ", Your details have been added in the system :)");
   }
 
-  AddStudentToServer(): void {
-    if (!this.studentForm.valid) {
-      console.log('Form is invalid');
-      return;
-    }
-  
-    const formValues = this.studentForm.value;
-  
-    const newStudent: Student = {
-      ...formValues,
-      id: this._studentService.getStudents()[this._studentService.getNumOfStudents() - 1].id + 1,
-      missimgDays: []
-    };
-  
-    if (formValues.missingDate && formValues.numOfMsgDays) {
-      const newMissimgDay = new MissimgDays(formValues.missingDate, formValues.numOfMsgDays);
-      newStudent.missimgDays.push(newMissimgDay);
-    }
-  
-    this.saveNewStudentToServer(newStudent);
-  }
-  
-  saveNewStudentToServer(newStudent: Student): void {
-    
-    this.onAddStudentToServer.emit(newStudent);  
-    
-  }  
-  
-  
-  
-  updateStudent(): void {
-    if (!this.studentForm.valid) {
-      console.log('Form is invalid');
-      return;
-    }
-
-    const formValues = this.studentForm.value;
-
-    const updateStudent: Student = {
-      ...formValues,
-      id: this.student?.id,
-      missimgDays: this.student?.missimgDays || [] 
-    };
-
-    if (formValues.missingDate && formValues.numOfMsgDays) {
-      const newMissimgDay = new MissimgDays(formValues.missingDate, formValues.numOfMsgDays);
-      updateStudent.missimgDays.push(newMissimgDay); 
-    }
-
-    this.saveUpdatedStudent(updateStudent);
-  }
-
   saveUpdatedStudent(updatedStudent: Student): void {
-    this.onEditStudent.emit(updatedStudent);      
+  this._studentService.updateStudent(updatedStudent);  
     alert("Hi " + updatedStudent.firstName + ", Your details have been updated in the system :)");
-  }
-
-  updateStudentToServer(): void {
-    if (!this.studentForm.valid) {
-      console.log('Form is invalid');
-      return;
-    }
-
-    const formValues = this.studentForm.value;
-
-    const updateStudent: Student = {
-      ...formValues,
-      id: this.student?.id,
-      missimgDays: this.student?.missimgDays || [] 
-    };
-
-    if (formValues.missingDate && formValues.numOfMsgDays) {
-      const newMissimgDay = new MissimgDays(formValues.missingDate, formValues.numOfMsgDays);
-      updateStudent.missimgDays.push(newMissimgDay); 
-    }
-
-    this.saveUpdatedStudentToServer(updateStudent);
-  }
-
-  saveUpdatedStudentToServer(updatedStudent: Student): void {
-    this.onEditStudentToServer.emit(updatedStudent);      
+    this._router.navigate(["/studentsList"]);
   }
 }
+

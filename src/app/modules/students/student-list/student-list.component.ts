@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { Student } from '../student.model';
 import { StudentService } from '../student.service';
 import { Observable, from, filter, Subject, debounceTime, switchMap, distinctUntilChanged, mergeMap, catchError, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'student-list',
@@ -26,7 +27,7 @@ export class StudentsListComponent {
   searchTerm: string = ''; 
   private searchSubject: Subject<string> = new Subject();
 
-  constructor(private _studentService: StudentService) { }
+  constructor(private _studentService: StudentService,private _router: Router) { }
 
   ngOnInit(): void {
     this._studentService.getStudentsByPromise().then((data) => {
@@ -35,12 +36,6 @@ export class StudentsListComponent {
       console.error("Error loading students:", err);
       alert("There was an issue loading the students data.");
     });
-  //   this._studentService.getStudentsFromServer().subscribe(data => {
-  //     this.studentsList = data;
-  //   }, err =>{
-  //     alert("Sory, Something Worng with Students List");
-  //       console.log(err);
-  // })
 
   this.searchSubject.pipe(
     debounceTime(1000), 
@@ -89,12 +84,10 @@ export class StudentsListComponent {
       console.error("Error while saving student to server: ", err);
       alert("Sorry, there was an error while adding the student to the server.");
     })
-  
   }
 
   clickEditStudent(selectedStudent: Student) {
-    this.typeDetais = "update";
-    this.selectedStudentDetails = selectedStudent;
+    this._router.navigate(["/studentDetails", selectedStudent.id])
   }
 
   clickEditStudentToServer(updatedStudent: Student) {
@@ -135,13 +128,6 @@ export class StudentsListComponent {
     );
   }
 
-  updateStdtInList(updatedStudent: Student) {
-    const index = this.studentsList.findIndex(student => student.id === updatedStudent.id);
-    if (index !== -1) {
-      this.studentsList[index] = updatedStudent;  
-    }
-  }
-  
   updateStdtToServer(updatedStudent: Student) {
     this._studentService.updateStudentToServer(updatedStudent).subscribe(
       data => {
@@ -237,6 +223,4 @@ export class StudentsListComponent {
   onSearchChange(value: string): void {
     this.searchSubject.next(value); 
   }
-  
-  
 }

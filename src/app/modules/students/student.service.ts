@@ -11,7 +11,7 @@ import { Injectable } from "@angular/core";
 
 export class StudentService{
 
-  private studendsList = [
+  private studendsList: Student[] = [
     {
       id: 1,
       firstName: "Jane",
@@ -83,6 +83,9 @@ export class StudentService{
       return this.studendsList;
   }
 
+  getStudentById(id: number): Student{
+    return this.studendsList.filter(std => std.id ===id)[0];
+  }
   getNumOfStudents(): number{
     return this.studendsList.length
   }
@@ -96,7 +99,7 @@ export class StudentService{
   getAvg(id: number): number{
     let student = this.studendsList.find((std)=>std.id == id);
     if( student)
-      return student.marksAvg;
+      return student.marksAvg || 0;
     return 0;
   }
 
@@ -122,6 +125,14 @@ export class StudentService{
     return this._http.post<boolean>("api/Students", student);
   }
 
+  updateStudent(updatedStudent: Student) {
+    const index = this.studendsList.findIndex(student => student.id === updatedStudent.id);
+    if (index !== -1) {
+      this.studendsList[index] = updatedStudent; 
+       console.log(this.studendsList);
+       
+    }
+  }
   updateStudentToServer(student: Student):
   Observable<boolean> {
     return this._http.post<boolean>("api/Students", [student.id, student]);

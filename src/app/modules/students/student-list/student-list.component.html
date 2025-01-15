@@ -2,7 +2,6 @@
 <div class="form-group">
     <label for="active">Present Active Student:</label>
     <input type="checkbox" #chb class="form-check-input" id="active" (change)="showActiveStudents(chb.checked)">
-    
 </div>
 
 <div class="form-group">
@@ -17,7 +16,6 @@
             <button (click)="deleteStudent(student.id)">Delete the Student</button>
             <button (click)="deleteStudentToServer(student.id)">Delete the Student from Server List</button>
             <button (click)="clickEditStudent(student)">Edit the Student</button>
-            <button (click)="clickEditStudentToServer(student)">Edit the Student to Server List</button>
             <button (click)="selectStdShowTests(student)">Show the Tests</button>
             <b>Id:</b>{{student.id}}, 
             <b>FirstName:</b>{{student.firstName}}, 
@@ -39,6 +37,4 @@
 
 <br>
 <br>
-<student-details [student]="selectedStudentDetails" (onAddStudent)="addStdtInList($event)" (onAddStudentToServer)="saveNewStdToServer($event)" (onEditStudent)="updateStdtInList($event)" (onEditStudentToServer)="updateStdtToServer($event)"[type]=typeDetais></student-details>
-
-
+<student-details [student]="selectedStudentDetails" (onAddStudent)="addStdtInList($event)" (onAddStudentToServer)="saveNewStdToServer($event)" (onEditStudentToServer)="updateStdtToServer($event)"[type]=typeDetais></student-details>

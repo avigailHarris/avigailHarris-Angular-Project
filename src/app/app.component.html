@@ -3,8 +3,13 @@
 <br>
 <h2>Hello!!!</h2>
 <h3>{{timeCalculation()}}</h3>
-<student-list (onShowTests)="showTests($event)"></student-list>
-<div *ngIf="selectedStudent">
-    <test-list [StdehowTests]="selectedStudent"></test-list>
-</div>
-<app-observable-demo></app-observable-demo>
+<br>
+<a routerLink="/home">Link To Home</a><br>
+<a routerLink="/studentsList">Link To Students' List</a><br>
+<a routerLink="/studentDetails">Link To Student's Details</a><br>
+
+
+<router-outlet></router-outlet>
+
+
+

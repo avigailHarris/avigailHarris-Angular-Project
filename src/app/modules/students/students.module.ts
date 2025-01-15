@@ -6,19 +6,24 @@ import { StudentDetailsComponent } from './student-details/student-details.compo
 import { TestListComponent } from '../../test-list/test-list.component'; 
 import { StudentService } from "./student.service";
 import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from "src/app/app-routing.module";  // תיקון כאן
 
 @NgModule({
     declarations: [
         StudentsListComponent,  
         StudentDetailsComponent,
+        TestListComponent
+
     ],
     imports: [
         BrowserModule,
         ReactiveFormsModule, 
         HttpClientModule, 
         FormsModule, 
+        AppRoutingModule 
     ],
     providers: [StudentService],
     exports: [StudentsListComponent]
 })
 export class StudentsModule {}
+
