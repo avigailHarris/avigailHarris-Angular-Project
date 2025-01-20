@@ -15,6 +15,7 @@ import { AccountComponent } from './modules/settings/account/account.component';
 import { FavoritesComponent } from './modules/settings/favorites/favorites.component';
 import { ProfileComponent } from './modules/settings/profile/profile.component';
 import { LoginComponent } from './login/login.component';
+import { PulseDirective } from "./directives/ltr.directive";
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { LoginComponent } from './login/login.component';
         AccountComponent,
         FavoritesComponent,
         ProfileComponent,
-        LoginComponent
+        LoginComponent,
+        PulseDirective
     ],
     imports: [
         BrowserModule,
